@@ -12,6 +12,7 @@ from odoo import tools
 from odoo.exceptions import AccessError
 from odoo.osv import expression
 from odoo.http import request
+import lxml.etree
 
 _logger = logging.getLogger(__name__)
 
@@ -518,7 +519,7 @@ class View(models.Model):
             hash_node = '<input type="hidden" class="form-control s_website_form_input s_website_form_custom" name="website_form_signature" value=""/>'
             if has_cc:
                 hash_value += ':email_cc'
-            form_values['email_to'].addnext(etree.fromstring(hash_node))
+            form_values['email_to'].addnext(etree.fromstring(hash_node, parser=lxml.etree.XMLParser(resolve_entities=False)))
             form_values['email_to'].getnext().attrib['value'] = hash_value
         return root
 

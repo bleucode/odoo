@@ -6,6 +6,7 @@ from lxml import etree
 from odoo import tools
 
 import odoo.tests
+import lxml.etree
 
 
 @odoo.tests.tagged('-at_install', 'post_install')
@@ -114,7 +115,7 @@ class TestUi(odoo.tests.HttpCase):
         self.env['website'].viewref('website_sale_comparison.product_attributes_body').active = False
         res = self.url_open('/shop/%d' % self.template_margaux.id)
         self.assertEqual(res.status_code, 200)
-        root = etree.fromstring(res.content, etree.HTMLParser())
+        root = etree.fromstring(res.content, etree.HTMLParser(), parser=lxml.etree.XMLParser(resolve_entities=False))
 
         tr_varieties_simple_att = root.xpath('//div[@id="product_attributes_simple"]//tr')[0]
         text = etree.tostring(tr_varieties_simple_att, encoding='unicode', method='text')
@@ -124,7 +125,7 @@ class TestUi(odoo.tests.HttpCase):
         self.env['website'].viewref('website_sale_comparison.product_attributes_body').active = True
         res = self.url_open('/shop/%d' % self.template_margaux.id)
         self.assertEqual(res.status_code, 200)
-        root = etree.fromstring(res.content, etree.HTMLParser())
+        root = etree.fromstring(res.content, etree.HTMLParser(), parser=lxml.etree.XMLParser(resolve_entities=False))
 
         tr_vintage = root.xpath('//div[@id="product_specifications"]//tr')[0]
         text_vintage = etree.tostring(tr_vintage, encoding='unicode', method='text')
@@ -137,7 +138,7 @@ class TestUi(odoo.tests.HttpCase):
         # Case compare page
         res = self.url_open('/shop/compare?products=%s' % ','.join(str(id) for id in self.variants_margaux.ids))
         self.assertEqual(res.status_code, 200)
-        root = etree.fromstring(res.content, etree.HTMLParser())
+        root = etree.fromstring(res.content, etree.HTMLParser(), parser=lxml.etree.XMLParser(resolve_entities=False))
 
         table = root.xpath('//table[@id="o_comparelist_table"]')[0]
 
