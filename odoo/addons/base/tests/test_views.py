@@ -1686,7 +1686,7 @@ class TestViews(ViewCase):
         self.assertEqual(
             etree.fromstring(
                 view['arch'],
-                parser=etree.XMLParser(remove_blank_text=True)
+                parser=etree.XMLParser(remove_blank_text=True, resolve_entities=False)
             ),
             E.form(
                 E.p("Replacement data"),
@@ -1804,7 +1804,7 @@ class TestViews(ViewCase):
         self.assertEqual(
             etree.fromstring(
                 view['arch'],
-                parser=etree.XMLParser(remove_blank_text=True)
+                parser=etree.XMLParser(remove_blank_text=True, resolve_entities=False)
             ),
             E.form(
                 E.p("Replacement data"),
