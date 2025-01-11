@@ -3,13 +3,13 @@
 import json
 import logging
 import pprint
-import random
 import requests
 import string
 from werkzeug.exceptions import Forbidden
 
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
+import secrets
 
 _logger = logging.getLogger(__name__)
 
@@ -56,7 +56,7 @@ class PosPaymentMethod(models.Model):
         return super(PosPaymentMethod, self)._is_write_forbidden(fields - whitelisted_fields)
 
     def _adyen_diagnosis_request_data(self, pos_config_name):
-        service_id = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        service_id = ''.join(secrets.SystemRandom().choices(string.ascii_letters + string.digits, k=10))
         return {
             "SaleToPOIRequest": {
                 "MessageHeader": {

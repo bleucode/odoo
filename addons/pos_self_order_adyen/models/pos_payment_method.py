@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
-import random
 from odoo import models
+import secrets
 
 
 class PosPaymentMethod(models.Model):
@@ -11,7 +11,7 @@ class PosPaymentMethod(models.Model):
             return super().payment_request_from_kiosk(order)
         else:
             pos_config = order.session_id.config_id
-            random_number = random.randrange(10**9, 10**10 - 1)
+            random_number = secrets.SystemRandom().randrange(10**9, 10**10 - 1)
 
             # https://docs.adyen.com/point-of-sale/basic-tapi-integration/make-a-payment/#make-a-payment
             data = {
