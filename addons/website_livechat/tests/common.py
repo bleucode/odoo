@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import random
 
 from odoo import fields, tests
+import secrets
 
 
 class TestLivechatCommon(tests.TransactionCase):
@@ -43,7 +43,7 @@ class TestLivechatCommon(tests.TransactionCase):
             'partner_id': self.env.ref('base.user_demo').partner_id.id,
             'access_token': self.env.ref('base.user_demo').partner_id.id,
         }] + [
-            dict(visitor_vals, access_token='%032x' % random.randrange(16**32))
+            dict(visitor_vals, access_token='%032x' % secrets.SystemRandom().randrange(16**32))
             for _ in range(self.max_sessions_per_operator)
         ])
         self.visitor_demo, self.visitor = self.visitors[0], self.visitors[1]
